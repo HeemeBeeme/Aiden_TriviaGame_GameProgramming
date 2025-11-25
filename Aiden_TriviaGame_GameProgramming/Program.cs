@@ -11,6 +11,7 @@ namespace Aiden_TriviaGame_GameProgramming
     {
         static string PlayerInput;
         static string PlayerName;
+        static string PlayerScoreStatus;
         static int PlayerScore = 0;
 
         static int QuestionNum = 1;
@@ -30,6 +31,52 @@ namespace Aiden_TriviaGame_GameProgramming
                                                         { "Q10A1", "Q10A2", "Q10A3", "Q10A4" } };
 
         static string[] correctAnswersArray = new string[] { "1", "3", "2", "1", "4", "3", "1", "4", "2", "2" };
+
+        static void DisplayScore()
+        {
+            switch(PlayerScore)
+            {
+                case 0:
+
+                    PlayerScoreStatus = "Oh Uh... Better Luck Next Time?";
+
+                    break;
+
+                case 3:
+
+                    PlayerScoreStatus = "You're Getting There, Just A Little More Work!";
+
+                    break;
+
+                case 5:
+
+                    PlayerScoreStatus = "Hey! Keep To It And You'll Be A Pro In No Time!";
+
+                    break;
+
+                case 8:
+
+                    PlayerScoreStatus = "Wow, You Did GREAT! You're Almost There!";
+
+                    break;
+
+                case 9:
+
+                    PlayerScoreStatus = "Oh Man! So Close! I Believe In You!";
+
+                    break;
+
+                case 10:
+
+                    PlayerScoreStatus = "You Must Be a Genious!";
+
+                    break;
+            }
+
+            Console.WriteLine($"{PlayerName}! Your Score Was: {PlayerScore}/{questionsArray.Length}!\n");
+            Console.WriteLine(PlayerScoreStatus);
+            Console.ReadKey();
+        }
 
         static void Questions()
         {
@@ -73,9 +120,7 @@ namespace Aiden_TriviaGame_GameProgramming
         {
             Menu();
 
-            Console.Clear();
-            Console.WriteLine($"{PlayerName}: {PlayerScore}/{questionsArray.Length}");
-            Console.ReadKey();
+            DisplayScore();
         }
     }
 }
