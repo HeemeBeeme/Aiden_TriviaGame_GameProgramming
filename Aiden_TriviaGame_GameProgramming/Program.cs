@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,8 +14,6 @@ namespace Aiden_TriviaGame_GameProgramming
         static string PlayerName;
         static string PlayerScoreStatus;
         static int PlayerScore = 0;
-
-        static int QuestionNum = 1;
 
         static string[] questionsArray = new string[] { "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10" };
 
@@ -32,50 +31,59 @@ namespace Aiden_TriviaGame_GameProgramming
 
         static string[] correctAnswersArray = new string[] { "1", "3", "2", "1", "4", "3", "1", "4", "2", "2" };
 
+        static void PlayAgain()
+        {
+            Console.WriteLine("Would You Like To Play Again?\n");
+            Console.WriteLine("Y/N:");
+            Console.SetCursorPosition(5, 2);
+
+            PlayerInput = Console.ReadLine().ToUpper();
+
+            if(PlayerInput == "Y" || PlayerInput == "N")
+            {
+                Console.Clear();
+                PlayerScore = 0;
+                Menu();
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+        }
+
         static void DisplayScore()
         {
-            switch(PlayerScore)
+            if (PlayerScore == 10)
             {
-                case 0:
-
-                    PlayerScoreStatus = "Oh Uh... Better Luck Next Time?";
-
-                    break;
-
-                case 3:
-
-                    PlayerScoreStatus = "You're Getting There, Just A Little More Work!";
-
-                    break;
-
-                case 5:
-
-                    PlayerScoreStatus = "Hey! Keep To It And You'll Be A Pro In No Time!";
-
-                    break;
-
-                case 8:
-
-                    PlayerScoreStatus = "Wow, You Did GREAT! You're Almost There!";
-
-                    break;
-
-                case 9:
-
-                    PlayerScoreStatus = "Oh Man! So Close! I Believe In You!";
-
-                    break;
-
-                case 10:
-
-                    PlayerScoreStatus = "You Must Be a Genious!";
-
-                    break;
+                PlayerScoreStatus = "You Must Be a Genious!";
+            }
+            else if (PlayerScore == 9)
+            {
+                PlayerScoreStatus = "Oh Man! So Close! I Believe In You!";
+            }
+            else if (PlayerScore == 8)
+            {
+                PlayerScoreStatus = "Wow, You Did GREAT! You're Almost There!";
+            }
+            else if (PlayerScore >= 7)
+            {
+                PlayerScoreStatus = "Hey! Keep To It And You'll Be A Pro In No Time!";
+            }
+            else if (PlayerScore >= 4)
+            {
+                PlayerScoreStatus = "You're Getting There, Just A Little More Work!";
+            }
+            else if (PlayerScore >= 0)
+            {
+                PlayerScoreStatus = "Oh Uh... Better Luck Next Time?";
             }
 
             Console.WriteLine($"{PlayerName}! Your Score Was: {PlayerScore}/{questionsArray.Length}!\n");
             Console.WriteLine(PlayerScoreStatus);
+            Console.WriteLine("\nPress Any Key...");
             Console.ReadKey();
+            Console.Clear();
+            PlayAgain();
         }
 
         static void Questions()
@@ -93,7 +101,7 @@ namespace Aiden_TriviaGame_GameProgramming
                 Console.SetCursorPosition(26, 7);
                 PlayerInput = Console.ReadLine().ToUpper();
 
-                if(PlayerInput.Length > 1 || !int.TryParse(PlayerInput, out int j))
+                if(PlayerInput.Length > 1 || !int.TryParse(PlayerInput, out int j) || int.Parse(PlayerInput) > 4 || int.Parse(PlayerInput) < 1)
                 {
                     i--;
                 }
@@ -119,7 +127,6 @@ namespace Aiden_TriviaGame_GameProgramming
         static void Main(string[] args)
         {
             Menu();
-
             DisplayScore();
         }
     }
