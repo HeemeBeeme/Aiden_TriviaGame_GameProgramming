@@ -10,10 +10,11 @@ namespace Aiden_TriviaGame_GameProgramming
 {
     internal class Program
     {
-        static string PlayerInput;
-        static string PlayerName;
-        static string PlayerScoreStatus;
-        static int PlayerScore = 0;
+        static string playerInput;
+        static string playerName;
+        static string playerScoreStatus;
+        static int playerScore = 0;
+        static int questionsAnswered = 1;
 
         static string[] questionsArray = new string[] { "What Is A String?",
                                                         "How Do You Write \"Hello World\" In The C# Console?",
@@ -47,19 +48,19 @@ namespace Aiden_TriviaGame_GameProgramming
             Console.CursorVisible = true;
             Console.SetCursorPosition(5, 2);
 
-            PlayerInput = Console.ReadLine().ToUpper();
+            playerInput = Console.ReadLine().ToUpper();
 
-            if(PlayerInput == "Y")
+            if(playerInput == "Y")
             {
                 Console.Clear();
-                PlayerScore = 0;
+                playerScore = 0;
                 Menu();
             }
-            else if(PlayerInput == "N")
+            else if(playerInput == "N")
             {
                 Environment.Exit(0);
             }
-            else if(PlayerInput == "MAYBE")
+            else if(playerInput == "MAYBE")
             {
                 Console.CursorVisible = false;
                 Console.Clear();
@@ -80,7 +81,9 @@ namespace Aiden_TriviaGame_GameProgramming
             {
                 Console.Clear();
                 Console.WriteLine("Your Input Was Invalid!\n\nPlease Try Again!\n\nPress Any Key...");
+                Console.CursorVisible = false;
                 Console.ReadKey();
+                Console.Clear();
                 PlayAgain();
             }
         }
@@ -89,39 +92,39 @@ namespace Aiden_TriviaGame_GameProgramming
         {
             ConsoleColor(System.ConsoleColor.Gray);
 
-            if (PlayerScore == 10)
+            if (playerScore == 10)
             {
-                PlayerScoreStatus = "You Must Be a Genious!";
+                playerScoreStatus = "You Must Be a Genious!";
             }
-            else if (PlayerScore == 9)
+            else if (playerScore == 9)
             {
-                PlayerScoreStatus = "Oh Man! So Close! I Believe In You!";
+                playerScoreStatus = "Oh Man! So Close! I Believe In You!";
             }
-            else if (PlayerScore == 8)
+            else if (playerScore == 8)
             {
-                PlayerScoreStatus = "Wow, You Did GREAT! You're Almost There!";
+                playerScoreStatus = "Wow, You Did GREAT! You're Almost There!";
             }
-            else if (PlayerScore >= 7)
+            else if (playerScore >= 7)
             {
-                PlayerScoreStatus = "Hey! Keep To It And You'll Be A Pro In No Time!";
+                playerScoreStatus = "Hey! Keep To It And You'll Be A Pro In No Time!";
             }
-            else if (PlayerScore >= 4)
+            else if (playerScore >= 4)
             {
-                PlayerScoreStatus = "You're Getting There, Just A Little More Work!";
+                playerScoreStatus = "You're Getting There, Just A Little More Work!";
             }
-            else if (PlayerScore >= 0)
+            else if (playerScore >= 0)
             {
-                PlayerScoreStatus = "Oh Uh... Better Luck Next Time?";
+                playerScoreStatus = "Oh Uh... Better Luck Next Time?";
             }
 
             ConsoleColor(System.ConsoleColor.Green);
-            Console.Write($"{PlayerName}! ");
+            Console.Write($"{playerName}! ");
             ConsoleColor(System.ConsoleColor.Gray);
             Console.Write($"Your Score Was: ");
             ConsoleColor(System.ConsoleColor.Yellow);
-            Console.Write($"{PlayerScore}/{questionsArray.Length}!\n\n");
+            Console.Write($"{playerScore}/{questionsArray.Length}!\n\n");
             ConsoleColor(System.ConsoleColor.Gray);
-            Console.WriteLine(PlayerScoreStatus);
+            Console.WriteLine(playerScoreStatus);
             Console.WriteLine("\nPress Any Key...");
             Console.CursorVisible = false;
             Console.ReadKey();
@@ -136,20 +139,30 @@ namespace Aiden_TriviaGame_GameProgramming
 
         static void HUD(int QuestionNum)
         {
+            if (questionsAnswered < 1)
+            {
+                questionsAnswered = 1;
+            }
+
+            float playerScoreDisplayed = (float)Math.Round(playerScore * 100f / questionsAnswered);
+
             ConsoleColor(System.ConsoleColor.Green);
-            Console.WriteLine($"{PlayerName}");
+            Console.WriteLine($"{playerName}");
             ConsoleColor(System.ConsoleColor.Yellow);
-            Console.Write($"Score: {PlayerScore}");
+            Console.Write($"Score: {playerScoreDisplayed}%");
+
             ConsoleColor(System.ConsoleColor.Gray);
-            Console.Write($", Question: {QuestionNum + 1}/{questionsArray.Length}\n\n");
+            Console.Write($", Question: {QuestionNum}/{questionsArray.Length}\n\n");
         }
 
         static void Questions()
         {
             for (int i = 0; i < questionsArray.Length; i++)
             {
-                HUD(i);
+                questionsAnswered = i;
 
+                HUD(i + 1);
+                Console.CursorVisible = true;
                 ConsoleColor(System.ConsoleColor.Gray);
                 Console.WriteLine(questionsArray[i]);
 
@@ -163,26 +176,33 @@ namespace Aiden_TriviaGame_GameProgramming
                 Console.WriteLine("\nPlease Enter Your Answer: ");
                 Console.SetCursorPosition(26, 10);
                 ConsoleColor(System.ConsoleColor.Cyan);
-                PlayerInput = Console.ReadLine().ToUpper();
+                playerInput = Console.ReadLine().ToUpper();
 
-                if(PlayerInput.Length > 1 || !int.TryParse(PlayerInput, out int j) || int.Parse(PlayerInput) > 4 || int.Parse(PlayerInput) < 1)
+                if(playerInput.Length > 1 || !int.TryParse(playerInput, out int j) || int.Parse(playerInput) > 4 || int.Parse(playerInput) < 1)
                 {
                     i--;
+                    Console.Clear();
+                    Console.WriteLine("Please Enter A Valid Answer!\n");
+                    Console.WriteLine("Press Any Key...");
+                    Console.CursorVisible = false;
+                    Console.ReadKey();
                 }
-                else if(PlayerInput == correctAnswersArray[i])
+                else if(playerInput == correctAnswersArray[i])
                 {
-                    PlayerScore++;
+                    playerScore++;
                 }
 
                 Console.Clear();
             }
+
+            DisplayScore();
         }
 
         static void Menu()
         {
             Console.WriteLine("Please Enter Your Name:");
             Console.SetCursorPosition(24, 0);
-            PlayerName = Console.ReadLine().ToUpper();
+            playerName = Console.ReadLine().ToUpper();
 
             Console.Clear();
             Questions();
@@ -191,7 +211,6 @@ namespace Aiden_TriviaGame_GameProgramming
         static void Main(string[] args)
         {
             Menu();
-            DisplayScore();
         }
     }
 }
