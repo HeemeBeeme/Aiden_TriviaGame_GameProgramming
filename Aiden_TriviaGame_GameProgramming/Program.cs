@@ -15,13 +15,13 @@ namespace Aiden_TriviaGame_GameProgramming
         static string PlayerScoreStatus;
         static int PlayerScore = 0;
 
-        static string[] questionsArray = new string[] { "What Is A String?", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10" };
+        static string[] questionsArray = new string[] { "What Is A String?", "How Do You Write \"Hello World\" In The Console?", "What Is A Comment?", "What Is Void Used For In A Method?", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10" };
 
         static string[,] answersArray = new string[,] {
                                                         { "A Sequence Of Characters", "A Single Character", "A Number", "That Stuff On Guitars" },
-                                                        { "Q2A1", "Q2A2", "Q2A3", "Q2A4" },
-                                                        { "Q3A1", "Q3A2", "Q3A3", "Q3A4" },
-                                                        { "Q4A1", "Q4A2", "Q4A3", "Q4A4" },
+                                                        { "System.out.println(\"Hello World\");", "printf(\"Hello World\");", "Console.WriteLine(\"Hello World\")", "print(\"Hello World\")" },
+                                                        { "A Value", "A Line(s) Within Code That Is Ignored", "A List Of Numbers", "A Method" },
+                                                        { "The Return Type", "A Variable Type", "Another Term For Null", "The Blank Space Between Lines Of Code" },
                                                         { "Q5A1", "Q5A2", "Q5A3", "Q5A4" },
                                                         { "Q6A1", "Q6A2", "Q6A3", "Q6A4" },
                                                         { "Q7A1", "Q7A2", "Q7A3", "Q7A4" },
@@ -35,19 +35,27 @@ namespace Aiden_TriviaGame_GameProgramming
         {
             Console.WriteLine("Would You Like To Play Again?\n");
             Console.WriteLine("Y/N:");
+            Console.CursorVisible = true;
             Console.SetCursorPosition(5, 2);
 
             PlayerInput = Console.ReadLine().ToUpper();
 
-            if(PlayerInput == "Y" || PlayerInput == "N")
+            if(PlayerInput == "Y")
             {
                 Console.Clear();
                 PlayerScore = 0;
                 Menu();
             }
-            else
+            else if(PlayerInput == "N")
             {
                 Environment.Exit(0);
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Your Input Was Invalid!\n\nPlease Try Again!\n\nPress Any Key...");
+                Console.ReadKey();
+                PlayAgain();
             }
         }
 
@@ -81,15 +89,23 @@ namespace Aiden_TriviaGame_GameProgramming
             Console.WriteLine($"{PlayerName}! Your Score Was: {PlayerScore}/{questionsArray.Length}!\n");
             Console.WriteLine(PlayerScoreStatus);
             Console.WriteLine("\nPress Any Key...");
+            Console.CursorVisible = false;
             Console.ReadKey();
             Console.Clear();
             PlayAgain();
+        }
+
+        static void HUD(int QuestionNum)
+        {
+            Console.WriteLine($"{PlayerName}: {PlayerScore}, Question: {QuestionNum + 1}\n");
         }
 
         static void Questions()
         {
             for (int i = 0; i < questionsArray.Length; i++)
             {
+                HUD(i);
+
                 Console.WriteLine(questionsArray[i]);
 
                 Console.WriteLine($"\n1:{answersArray[i, 0]}");
@@ -98,7 +114,7 @@ namespace Aiden_TriviaGame_GameProgramming
                 Console.WriteLine($"4:{answersArray[i, 3]}");
 
                 Console.WriteLine("\nPlease Enter Your Answer: ");
-                Console.SetCursorPosition(26, 7);
+                Console.SetCursorPosition(26, 9);
                 PlayerInput = Console.ReadLine().ToUpper();
 
                 if(PlayerInput.Length > 1 || !int.TryParse(PlayerInput, out int j) || int.Parse(PlayerInput) > 4 || int.Parse(PlayerInput) < 1)
