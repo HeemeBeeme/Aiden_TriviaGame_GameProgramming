@@ -15,10 +15,10 @@ namespace Aiden_TriviaGame_GameProgramming
         static string PlayerScoreStatus;
         static int PlayerScore = 0;
 
-        static string[] questionsArray = new string[] { "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10" };
+        static string[] questionsArray = new string[] { "What Is A String?", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10" };
 
         static string[,] answersArray = new string[,] {
-                                                        { "Q1A1", "Q1A2", "Q1A3", "Q1A4" },
+                                                        { "A Sequence Of Characters", "A Single Character", "A Number", "That Stuff On Guitars" },
                                                         { "Q2A1", "Q2A2", "Q2A3", "Q2A4" },
                                                         { "Q3A1", "Q3A2", "Q3A3", "Q3A4" },
                                                         { "Q4A1", "Q4A2", "Q4A3", "Q4A4" },
